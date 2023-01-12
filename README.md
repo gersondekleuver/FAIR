@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 # Proto2Proto [[arxiv](https://arxiv.org/abs/2204.11830)]
 
@@ -68,3 +69,6 @@ If you use our work in your research please cite us:
   year={2022}
 }
 ```
+=======
+# Fact - proto2proto
+>>>>>>> 2dfc95687c43a050b857eeb985a2576a097c69a6
