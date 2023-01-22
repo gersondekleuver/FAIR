@@ -6,9 +6,9 @@ dataConfig:
   imgSize: 224
   loaderName: cars
   augment: false
-  trainDir: datasets/cars/train_augmented # Check the dataset path
-  projectDir: datasets/cars/train # Check the dataset path
-  testDir: datasets/cars/test # Check the dataset path
+  trainDir: datasets/CUB_200_2011/dataset/train_cropped_augmented # Check the dataset path
+  projectDir: datasets/CUB_200_2011/train # Check the dataset path
+  testDir: datasets/CUB_200_2011/dataset/test_full_augmented # Check the dataset path
 settingsConfig:
   imgSize: 224
   numFeatures: 256
@@ -21,7 +21,7 @@ settingsConfig:
     pretrained: true
     featureDim: 2048
     prototypicalModel: protopnet
-    loadPath: null #Add path to teacher model
+    loadPath: saved_models/vgg19/004/10_198push0.7639.pth
   target:
     name: vgg11
     pretrained: true
