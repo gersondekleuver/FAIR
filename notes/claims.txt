@@ -1,0 +1,16 @@
+Claims made in Keswani et al. (2022):
+==Contributions==
+Two novel losses
+    Global Explanation loss
+        Does Euclidean distance make sense as a distance metric? It doesn't take prototype size in account—I assume?
+    Patch-Prototype Correspondence loss
+Three evaluation metrics
+    Average number of Active Patches
+    Average Jaccard Similarity of Active Patches with Teacher
+    Prototype Matching Score
+    Why are these about interpretability transfer? Don't they measure how similar the student is to the teacher in general? If they are similar, then the interpretability should be about the same, but if they are not similar, the interpretability still might be about the same.
+Comprehensive suite of experiments which show the effectiveness of their method
+    Can we qualify this? They show that accuracy increases compared to the baseline student (which we should of course reproduce), so I guess it makes sense...
+
+==Assumptions==
+The student model is inherently interpretable due to the usage of an interpretable model for training a teacher
