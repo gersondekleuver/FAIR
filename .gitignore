@@ -9,3 +9,4 @@ datasets/data
 datasets/features/state_dicts
 */*.pth
 .idea
+saved_models
