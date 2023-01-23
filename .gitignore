@@ -6,5 +6,6 @@ __pycache__/
 *.cpython-36.pyc
 org/
 datasets/data
+datasets/features/state_dicts
 */*.pth
 .idea
