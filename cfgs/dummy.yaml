@@ -6,7 +6,7 @@ dataConfig:
   imgSize: 224
   loaderName: cars
   augment: false
-  trainDir: /content/drive/MyDrive/dataset/data/cars/dataset/train_augmented_less
+  trainDir: /content/drive/MyDrive/dataset/data/cars/dataset/train_augmented
   projectDir: /content/drive/MyDrive/dataset/data/cars/dataset/train
   testDir: /content/drive/MyDrive/dataset/data/cars/dataset/test
 settingsConfig:
@@ -15,7 +15,7 @@ settingsConfig:
   PrototypeActivationFunction: log
   useCheckpointOptimizer: true
   backbone:
-    name: resnet18
+    name: resnet50
     pretrained: true
     loadPath: null
     prototypicalModel: protopnet
@@ -37,7 +37,7 @@ settingsConfig:
       weight: 1.0e-04
   train:
     seed: 12
-    maxEpochs: 300
+    maxEpochs: 20
     lrNet: 2.0e-04
     lrBlock: 3.0e-03
     lrProto: 3.0e-03
@@ -58,5 +58,5 @@ common:
   numWorkers: 0
   testBatchSize: 100
   testNumWorkers: 0
-  trainBatchSize: 128
-  trainNumWorkers: 4
+  trainBatchSize: 32
+  trainNumWorkers: 2

@@ -15,7 +15,7 @@ settingsConfig:
   PrototypeActivationFunction: log
   useCheckpointOptimizer: true
   backbone:
-    name: resnet18
+    name: resnet50
     pretrained: true
     loadPath: null
     prototypicalModel: protopnet
@@ -37,7 +37,7 @@ settingsConfig:
       weight: 1.0e-04
   train:
     seed: 12
-    maxEpochs: 300
+    maxEpochs: 50
     lrNet: 2.0e-04
     lrBlock: 3.0e-03
     lrProto: 3.0e-03
@@ -56,7 +56,7 @@ common:
   cuda: true
   mgpus: true
   numWorkers: 0
-  testBatchSize: 100
+  testBatchSize: 64
   testNumWorkers: 0
-  trainBatchSize: 128
-  trainNumWorkers: 4
+  trainBatchSize: 64
+  trainNumWorkers: 2

@@ -1,5 +1,5 @@
 dataDir: fill
-newRun: false
+newRun: true
 runName: Resnet50
 serviceName: protopnet_basic
 dataConfig:

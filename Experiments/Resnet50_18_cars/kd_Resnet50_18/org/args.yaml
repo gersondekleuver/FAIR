@@ -1,7 +1,7 @@
 dataDir: fill
 newRun: false
-runName: Resnet50
-serviceName: protopnet_basic
+runName: kd_Resnet50_18
+serviceName: protopnet_kd
 dataConfig:
   imgSize: 224
   loaderName: cars
@@ -13,18 +13,34 @@ settingsConfig:
   imgSize: 224
   numFeatures: 256
   PrototypeActivationFunction: log
+  prototypicalModel: protopnet
   useCheckpointOptimizer: true
+  tauTrain: 100
   backbone:
+    name: resnet50
+    pretrained: true
+    featureDim: 2048
+    prototypicalModel: protopnet
+    loadPath: null #Add path to teacher model
+  target:
     name: resnet18
     pretrained: true
     loadPath: null
+    featureDim: 512
     prototypicalModel: protopnet
   protoPNet:
     numPrototypes: 1960
-    classSpecific: true
+    classSpecific: True
     W1: 1
     H1: 1
-  lossList:
+  stage1LossList:
+    addOnLoss:
+      consider: true
+      weight: 10.0
+    protoLoss:
+      consider: true
+      weight: 10.0
+  stage2LossList:
     crossEntropy:
       consider: true
       weight: 1.0
@@ -35,9 +51,15 @@ settingsConfig:
     l1:
       consider: true
       weight: 1.0e-04
+    addOnLoss:
+      consider: true
+      weight: 10.0
+    protoLoss:
+      consider: true
+      weight: 10.0
   train:
-    seed: 12
-    maxEpochs: 300
+    seed: 9
+    maxEpochs: 20
     lrNet: 2.0e-04
     lrBlock: 3.0e-03
     lrProto: 3.0e-03
@@ -47,16 +69,17 @@ settingsConfig:
     stepSize: 4
     stepStart: 16
     warmEpochs: 6
+    stage1Epochs: 0
     pushStart: 12
     evalEpoch: 1
     saveEpoch: 1
-    optimizer: Adam
+    optimizer: AdamW
     useTensorboard: true
 common:
   cuda: true
   mgpus: true
   numWorkers: 0
-  testBatchSize: 100
+  testBatchSize: 64
   testNumWorkers: 0
-  trainBatchSize: 128
-  trainNumWorkers: 4
+  trainBatchSize: 64
+  trainNumWorkers: 2
