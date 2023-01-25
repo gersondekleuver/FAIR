@@ -19,17 +19,17 @@ settingsConfig:
     prototypicalModel: protopnet
     name: resnet50
     pretrained: true
-    loadPath: null # Path-to-teacher-model
+    loadPath: /content/drive/MyDrive/Fact/Experiments/Resnet50_18_cars/teacher_Resnet50/org/models/teacher_resnet50_protopnet_1.pth
   StudentBaselinebackbone:
     prototypicalModel: protopnet
     name: resnet18
     pretrained: true
-    loadPath: null # Path-to-student-baseline-model
+    loadPath: /content/drive/MyDrive/Fact/Experiments/Resnet50_18_cars/student_Resnet18/org/models/student_resnet18_protopnet_1.pth
   StudentKDbackbone:
     prototypicalModel: protopnet
     name: resnet18
     pretrained: true
-    loadPath: null # Path-to-student-kd-model
+    loadPath: /content/drive/MyDrive/Fact/Experiments/Resnet50_18_cars/kd_Resnet50_18/org/models/student_kd_resnet50_18_1.pth
   protoPNet:
     numPrototypes: 1960
     classSpecific: true

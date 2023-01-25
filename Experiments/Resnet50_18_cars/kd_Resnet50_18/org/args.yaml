@@ -21,7 +21,7 @@ settingsConfig:
     pretrained: true
     featureDim: 2048
     prototypicalModel: protopnet
-    loadPath: null #Add path to teacher model
+    loadPath: /content/drive/MyDrive/Fact/Experiments/Resnet50_18_cars/teacher_Resnet50/org/models/teacher_resnet50_protopnet_1.pth
   target:
     name: resnet18
     pretrained: true
@@ -59,7 +59,7 @@ settingsConfig:
       weight: 10.0
   train:
     seed: 9
-    maxEpochs: 20
+    maxEpochs: 50
     lrNet: 2.0e-04
     lrBlock: 3.0e-03
     lrProto: 3.0e-03

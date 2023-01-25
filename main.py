@@ -15,9 +15,19 @@ import ray
 def main():
 
     # make change to your task for fact project
-    runName = "teacher_Resnet50"
+
+
+    if runName in ("teacher_Resnet50", "student_Resnet18" ):
+        serviceType ="recognition"
+    elif runName in ("kd_Resnet50_18" ):
+        serviceType ="kd"
+    elif runName in ("eval_setting" ):
+        serviceType ="evaluate"
+    else:
+        raise Exception("wrong runName %s" %runName )
+
+
     newRun = "false"
-    serviceType ="recognition"
     randomRun =  "org"
     ablationType = "Resnet50_18_cars"
 
