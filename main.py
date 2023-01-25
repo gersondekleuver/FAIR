@@ -12,9 +12,11 @@ import ray
 # num_cpus = os.cpu_count()
 # ray.init(num_cpus = num_cpus)
 
-def main():
+def main(runName="teacher_Resnet50"):
 
     # make change to your task for fact project
+
+    print("Your are running %s"%runName)
 
 
     if runName in ("teacher_Resnet50", "student_Resnet18" ):
