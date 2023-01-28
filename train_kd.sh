@@ -1,11 +1,11 @@
 #!/bin/sh
 
-RANDOMN=$$
-RANDOM=org
-runName=kd_Resnet50_18
+RANDOMN=$20034$
+RANDOM=$20034$
+runName=kd_Vgg19_11
 newRun=false
 serviceType=kd
-ablationType=Resnet50_18_cars
+ablationType=Vgg19_11
 
 mkdir Experiments/$ablationType/$runName/$RANDOM
 expOut=Experiments/$ablationType/$runName/$RANDOM/$RANDOM.out

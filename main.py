@@ -12,9 +12,12 @@ import ray
 # num_cpus = os.cpu_count()
 # ray.init(num_cpus = num_cpus)
 
+
 def main():
 
     runName, newRun, serviceType, randomRun, ablationType = sys.argv[1:]
+    print(runName, newRun, serviceType, randomRun, ablationType)
+
     newRun = newRun.lower() == "true"
     if runName.strip().lower() == "none":
         runName = None
@@ -32,6 +35,7 @@ def main():
     dataset_loader = init_dataset(manager.dataConfig.loaderName)
     service = init_service(serviceType, manager.service_name, dataset_loader)
     service()
+
 
 if __name__ == "__main__":
     main()

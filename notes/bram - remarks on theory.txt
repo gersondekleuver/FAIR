@@ -1,0 +1,22 @@
+- hyperparameters
+
+	- no explanation why lambdas in total loss are set to 10
+
+	- setting tau train higher than eval makes sense because you want to have lots of training data activations (so that you have more info to train with), but when evaluating you only want to make use of things that you're reasonably sure about
+
+- global exp loss
+
+	- general formula makes a lot of sense
+
+	- could do something with weighing patches on the edge/corner less, currently every prototype is weighed equally (which we agree is the most logical way if there's no good reason to do otherwise) 
+
+	- euclidian distance is logical bc datasets for teacher/student are the same
+
+- patch loss
+
+	- https://arxiv.org/pdf/1412.6550.pdf (citation 37 of proto2proto paper), page 3 section 2.2
+
+	- good justification for masking only active patches: hint training for knowledge transfer, while also transferring interpretability
+
+	- masking some of the representations might reduce accuracy, but that is not the main point of proto2proto so that is ok
+

@@ -1,30 +1,46 @@
 dataDir: fill
 newRun: false
-runName: Resnet50
-serviceName: protopnet_basic
+runName: kd_Vgg19_11
+serviceName: protopnet_kd
 dataConfig:
   imgSize: 224
   loaderName: cars
   augment: false
-  trainDir: datasets/cars/train_augmented
-  projectDir: datasets/cars/train
-  testDir: datasets/cars/test
+  trainDir: datasets/CUB_200_2011/dataset/train_cropped_augmented # Check the dataset path
+  projectDir: datasets/CUB_200_2011/train # Check the dataset path
+  testDir: datasets/CUB_200_2011/dataset/test_full_augmented # Check the dataset path
 settingsConfig:
   imgSize: 224
   numFeatures: 256
   PrototypeActivationFunction: log
+  prototypicalModel: protopnet
   useCheckpointOptimizer: true
+  tauTrain: 100
   backbone:
-    name: resnet18
+    name: vgg19
+    pretrained: true
+    featureDim: 2048
+    prototypicalModel: protopnet
+    loadPath: saved_models/vgg19/004/10_198push0.7639.pth
+  target:
+    name: vgg11
     pretrained: true
     loadPath: null
+    featureDim: 512
     prototypicalModel: protopnet
   protoPNet:
     numPrototypes: 1960
-    classSpecific: true
+    classSpecific: True
     W1: 1
     H1: 1
-  lossList:
+  stage1LossList:
+    addOnLoss:
+      consider: true
+      weight: 10.0
+    protoLoss:
+      consider: true
+      weight: 10.0
+  stage2LossList:
     crossEntropy:
       consider: true
       weight: 1.0
@@ -35,8 +51,14 @@ settingsConfig:
     l1:
       consider: true
       weight: 1.0e-04
+    addOnLoss:
+      consider: true
+      weight: 10.0
+    protoLoss:
+      consider: true
+      weight: 10.0
   train:
-    seed: 12
+    seed: 9
     maxEpochs: 300
     lrNet: 2.0e-04
     lrBlock: 3.0e-03
@@ -47,10 +69,11 @@ settingsConfig:
     stepSize: 4
     stepStart: 16
     warmEpochs: 6
+    stage1Epochs: 0
     pushStart: 12
     evalEpoch: 1
     saveEpoch: 1
-    optimizer: Adam
+    optimizer: AdamW
     useTensorboard: true
 common:
   cuda: true
@@ -58,5 +81,5 @@ common:
   numWorkers: 0
   testBatchSize: 100
   testNumWorkers: 0
-  trainBatchSize: 128
+  trainBatchSize: 64
   trainNumWorkers: 4

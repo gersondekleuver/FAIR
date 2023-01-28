@@ -1,14 +1,14 @@
 dataDir: fill
 newRun: false
-runName: kd_Resnet50_18
+runName: kd_Vgg19_11
 serviceName: protopnet_kd
 dataConfig:
   imgSize: 224
   loaderName: cars
   augment: false
-  trainDir: datasets/cars/train_augmented # Check the dataset path
-  projectDir: datasets/cars/train # Check the dataset path
-  testDir: datasets/cars/test # Check the dataset path
+  trainDir: datasets/CUB_200_2011/dataset/train_corners # Check the dataset path
+  projectDir: datasets/CUB_200_2011/ # Check the dataset path
+  testDir: datasets/CUB_200_2011/dataset/test_full # Check the dataset path
 settingsConfig:
   imgSize: 224
   numFeatures: 256
@@ -17,19 +17,19 @@ settingsConfig:
   useCheckpointOptimizer: true
   tauTrain: 100
   backbone:
-    name: resnet50
+    name: vgg19
     pretrained: true
     featureDim: 2048
     prototypicalModel: protopnet
-    loadPath: null #Add path to teacher model
+    loadPath: saved_models/vgg19/004/10_198push0.7639.pth
   target:
-    name: resnet18
+    name: vgg11
     pretrained: true
     loadPath: null
     featureDim: 512
     prototypicalModel: protopnet
   protoPNet:
-    numPrototypes: 1960
+    numPrototypes: 2000
     classSpecific: True
     W1: 1
     H1: 1
@@ -82,4 +82,4 @@ common:
   testBatchSize: 100
   testNumWorkers: 0
   trainBatchSize: 64
-  trainNumWorkers: 2
+  trainNumWorkers: 4
