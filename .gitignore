@@ -5,8 +5,9 @@ __pycache__/
 *.py[cod]
 *.cpython-36.pyc
 org/
-datasets/data
+datasets
 datasets/features/state_dicts
 */*.pth
 .idea
 saved_models
+img
