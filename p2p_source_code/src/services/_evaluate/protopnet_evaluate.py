@@ -138,7 +138,8 @@ class Service(object):
         print("AJS(baseline): ", self.ajs_baseline)
         print("AJS(kd): ", self.ajs_kd)
 
-        self.evaluate(None, teacher_data, stu_kd_data, stu_baseline_data, calc_pm=True)
+        # comment out for pms
+        # self.evaluate(None, teacher_data, stu_kd_data, stu_baseline_data, calc_pm=True)
   
     def acc_from_cm(cm: np.ndarray) -> float:
         """
