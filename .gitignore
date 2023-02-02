@@ -10,4 +10,4 @@ datasets/features/state_dicts
 */*.pth
 .idea
 saved_models
-img
+
