@@ -24,6 +24,7 @@ from preprocess import mean, std, preprocess_input_function, undo_preprocess_inp
 
 import argparse
 
+
 parser = argparse.ArgumentParser()
 parser.add_argument('-gpuid', nargs=1, type=str, default='0')
 parser.add_argument('-modeldir', nargs=1, type=str)
@@ -59,7 +60,7 @@ load_model_name = args.model[0]  # '10_18push0.7822.pth'
 model_base_architecture = load_model_dir.split('/')[2]
 experiment_run = '/'.join(load_model_dir.split('/')[3:])
 
-save_analysis_path = os.path.join(test_image_dir, model_base_architecture,
+save_analysis_path = os.path.join("local_analysis_output", model_base_architecture,
                                   experiment_run, load_model_name)
 makedir(save_analysis_path)
 
@@ -79,7 +80,6 @@ ppnet = torch.load(load_model_path, map_location=torch.device('cuda'))
 ppnet = ppnet.module
 ppnet = ppnet.cuda()
 ppnet_multi = torch.nn.DataParallel(ppnet)
-
 
 img_size = 224
 prototype_shape = ppnet.prototype_shape
@@ -150,7 +150,6 @@ def save_prototype(fname, epoch, index):
     # plt.axis('off')
     plt.imsave(fname, p_img)
 
-
 # def save_prototype_self_activation(fname, epoch, index):
 #     p_img = plt.imread(os.path.join(load_img_dir, 'epoch-'+str(epoch),
 #                                     f'{(5 - len(str(index))) * "0"}{str(index)}_prototype-self-act'+'.npy'))
@@ -209,7 +208,7 @@ if ppnet.prototype_activation_function == 'linear':
 tables = []
 for i in range(logits.size(0)):
     tables.append((torch.argmax(logits, dim=1)[
-                  i].item(), labels_test[i].item()))
+        i].item(), labels_test[i].item()))
     log(str(i) + ' ' + str(tables[-1]))
 
 idx = 0
@@ -302,7 +301,8 @@ k = 50
 log('Prototypes from top-%d classes:' % k)
 topk_logits, topk_classes = torch.topk(logits[idx], k=k)
 for i, c in enumerate(topk_classes.detach().cpu().numpy()):
-    makedir(os.path.join(save_analysis_path, 'top-%d_class_prototypes' % (i+1)))
+    makedir(os.path.join(save_analysis_path,
+                         'top-%d_class_prototypes' % (i+1)))
 
     log('top %d predicted class: %d' % (i+1, c))
     log('logit of the class: %f' % topk_logits[i])
