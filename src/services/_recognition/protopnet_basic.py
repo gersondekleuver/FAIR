@@ -181,7 +181,7 @@ class Trainer(object):
             class_specific=True,
             preprocess_input_function=preprocess.preprocess_input_function,
             prototype_layer_stride=1,
-            root_dir_for_saving_prototypes=None, # if not None, prototypes will be saved here
+            root_dir_for_saving_prototypes='/content/drive/MyDrive/reco_proto', # if not None, prototypes will be saved here
             epoch_number=epoch, # if not provided, prototypes saved previously will be overwritten
             prototype_img_filename_prefix='prototype-img',
             prototype_self_act_filename_prefix='prototype-self-act',

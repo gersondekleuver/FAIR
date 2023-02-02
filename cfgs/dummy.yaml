@@ -1,62 +1,47 @@
 dataDir: fill
 newRun: false
-runName: Resnet50
-serviceName: protopnet_basic
+runName: Resnet50_18_cars
+serviceName: protopnet_evaluate_final
 dataConfig:
   imgSize: 224
   loaderName: cars
   augment: false
-  trainDir: /content/drive/MyDrive/dataset/data/cars/dataset/train_augmented
-  projectDir: /content/drive/MyDrive/dataset/data/cars/dataset/train
-  testDir: /content/drive/MyDrive/dataset/data/cars/dataset/test
+  trainDir: datasets/data/cars/dataset/train_augmented_less
+  projectDir: datasets/data/cars/dataset/train
+  testDir: datasets/data/cars/dataset/test
 settingsConfig:
   imgSize: 224
   numFeatures: 256
+  prototypicalModel: protopnet
   PrototypeActivationFunction: log
   useCheckpointOptimizer: true
-  backbone:
+  Teacherbackbone:
+    prototypicalModel: protopnet
     name: resnet50
     pretrained: true
-    loadPath: null
+    loadPath: Experiments/Resnet50_18_cars/teacher_Resnet50/org/models/teacher_protopnet_22_0.7737.pth
+  StudentBaselinebackbone:
     prototypicalModel: protopnet
+    name: resnet18
+    pretrained: true
+    loadPath: Experiments/Resnet50_18_cars/student_Resnet18/org/models/student_protopnet_21_0.619.pth
+  StudentKDbackbone:
+    prototypicalModel: protopnet
+    name: resnet18
+    pretrained: true
+    loadPath: Experiments/Resnet50_18_cars/kd_Resnet50_18/org/models/kd_protopnet_22_0.729.pth
   protoPNet:
     numPrototypes: 1960
     classSpecific: true
     W1: 1
     H1: 1
-  lossList:
-    crossEntropy:
-      consider: true
-      weight: 1.0
-    clusterSep:
-      consider: true
-      clusterWeight: 1.0
-      sepWeight: -0.08
-    l1:
-      consider: true
-      weight: 1.0e-04
   train:
     seed: 12
-    maxEpochs: 20
-    lrNet: 2.0e-04
-    lrBlock: 3.0e-03
-    lrProto: 3.0e-03
-    lrLastLayer: 1.0e-04
-    weightDecay: 1.0e-03
-    gamma: 0.1
-    stepSize: 4
-    stepStart: 16
-    warmEpochs: 6
-    pushStart: 12
-    evalEpoch: 1
-    saveEpoch: 1
-    optimizer: Adam
-    useTensorboard: true
 common:
   cuda: true
   mgpus: true
   numWorkers: 0
-  testBatchSize: 100
+  testBatchSize: 1
   testNumWorkers: 0
-  trainBatchSize: 32
-  trainNumWorkers: 2
+  trainBatchSize: 4
+  trainNumWorkers: 1

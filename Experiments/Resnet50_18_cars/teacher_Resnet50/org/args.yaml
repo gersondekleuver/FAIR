@@ -6,9 +6,9 @@ dataConfig:
   imgSize: 224
   loaderName: cars
   augment: false
-  trainDir: /content/drive/MyDrive/dataset/data/cars/dataset/train_augmented_less
-  projectDir: /content/drive/MyDrive/dataset/data/cars/dataset/train
-  testDir: /content/drive/MyDrive/dataset/data/cars/dataset/test
+  trainDir: datasets/data/cars/dataset/train_augmented_less
+  projectDir: datasets/data/cars/dataset/train
+  testDir: datasets/data/cars/dataset/test
 settingsConfig:
   imgSize: 224
   numFeatures: 256
@@ -37,7 +37,7 @@ settingsConfig:
       weight: 1.0e-04
   train:
     seed: 12
-    maxEpochs: 50
+    maxEpochs: 35
     lrNet: 2.0e-04
     lrBlock: 3.0e-03
     lrProto: 3.0e-03
@@ -58,5 +58,5 @@ common:
   numWorkers: 0
   testBatchSize: 64
   testNumWorkers: 0
-  trainBatchSize: 64
+  trainBatchSize: 128
   trainNumWorkers: 2

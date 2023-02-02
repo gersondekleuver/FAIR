@@ -11,7 +11,7 @@ from lib import init_proto_model
 from lib.protopnet.losses import cluster_sep_loss_fn, l1_loss_fn
 from lib.protopnet.optimizer import get_optimizer, last_only, warm_only, joint
 from lib.protopnet import push, save, preprocess
-import ray
+#import ray
 from lib.utils import evaluate
 from src.utils import _common
 from scipy.optimize import linear_sum_assignment 
@@ -27,7 +27,7 @@ class Service(object):
         self.dataset_loader = dataset_loader
 
         num_cpus = os.cpu_count()
-        ray.init(num_cpus=num_cpus)
+        #ray.init(num_cpus=num_cpus)
 
         self.teacher_model, _, _ = init_proto_model(
             manager, dataset_loader.classes, manager.settingsConfig.Teacherbackbone)
@@ -197,9 +197,12 @@ class Service(object):
         mm = self.teacher_model.module.num_prototypes
         nn = self.student_kd_model.module.num_prototypes
 
-        tchr_proto_id = ray.put(teacher_prototypes)
-        stu_kd_proto_id = ray.put(student_kd_prototypes)
-        stu_baseline_proto_id = ray.put(student_baseline_prototypes)
+       # tchr_proto_id = ray.put(teacher_prototypes)
+        tchr_proto_id = teacher_prototypes
+       # stu_kd_proto_id = ray.put(student_kd_prototypes)
+        stu_kd_proto_id = student_kd_prototypes
+    # stu_baseline_proto_id = ray.put(student_baseline_prototypes)
+        stu_baseline_proto_id = student_baseline_prototypes
         max_union_list = [ii for ii in range(int(0.1*num_test_images), num_test_images, int(0.1*num_test_images))]
 
         cost_kd_list = []
@@ -209,11 +212,13 @@ class Service(object):
             obj_ids = []
             for ii in tqdm(range(mm)):
 
-                obj_id = jaccard_row.remote(ii, tchr_proto_id, stu_kd_proto_id, max_union)
+                #obj_id = jaccard_row.remote(ii, tchr_proto_id, stu_kd_proto_id, max_union)
+                obj_id = jaccard_row(ii, tchr_proto_id, stu_kd_proto_id, max_union)
                 obj_ids.append(obj_id)
 
                 if ii % 30 == 0 or ii == mm - 1:
-                    results = ray.get(obj_ids)
+                    # results = ray.get(obj_ids)
+                    results = obj_ids
                     for kk in range(len(obj_ids)):
                         index, sim = results[kk]
                         iou_matrix[index] = sim
@@ -240,11 +245,13 @@ class Service(object):
             obj_ids = []
             for ii in tqdm(range(mm)):
 
-                obj_id = jaccard_row.remote(ii, tchr_proto_id, stu_baseline_proto_id, max_union)
+                #obj_id = jaccard_row.remote(ii, tchr_proto_id, stu_baseline_proto_id, max_union)
+                obj_id = jaccard_row(ii, tchr_proto_id, stu_baseline_proto_id, max_union)
                 obj_ids.append(obj_id)
 
                 if ii % 30 == 0 or ii == mm - 1:
-                    results = ray.get(obj_ids)
+                  #  results = ray.get(obj_ids)
+                    results = obj_ids
                     for kk in range(len(obj_ids)):
                         index, sim = results[kk]
                         iou_matrix[index] = sim
@@ -260,9 +267,9 @@ class Service(object):
         avg_cost_kd = sum(cost_kd_list) / len(cost_kd_list)
         print("Average Similarity between prototypes(Baseline)", 1.0 - avg_cost_kd)
 
-        ray.get(tchr_proto_id)
-        ray.get(stu_kd_proto_id)
-        ray.get(stu_baseline_proto_id)
+       # ray.get(tchr_proto_id)
+       # ray.get(stu_kd_proto_id)
+       # ray.get(stu_baseline_proto_id)
 
         return
 
@@ -303,7 +310,7 @@ def plot_ajs(baseline, kd, dts, save_dir):
     plt.show()
     plt.savefig(os.path.join(save_dir, 'ajs.png'))
 
-@ray.remote
+#@ray.remote
 def jaccard_row(ii, tchr_prototypes, stu_prototypes, max_union):
 
     proto_row = np.zeros(len(stu_prototypes))

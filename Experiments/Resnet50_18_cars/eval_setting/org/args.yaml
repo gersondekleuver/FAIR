@@ -6,9 +6,9 @@ dataConfig:
   imgSize: 224
   loaderName: cars
   augment: false
-  trainDir: /content/drive/MyDrive/dataset/data/cars/dataset/train_augmented_less
-  projectDir: /content/drive/MyDrive/dataset/data/cars/dataset/train
-  testDir: /content/drive/MyDrive/dataset/data/cars/dataset/test
+  trainDir: datasets/data/cars/dataset/train_augmented_less
+  projectDir: datasets/data/cars/dataset/train
+  testDir: datasets/data/cars/dataset/test
 settingsConfig:
   imgSize: 224
   numFeatures: 256
@@ -19,17 +19,17 @@ settingsConfig:
     prototypicalModel: protopnet
     name: resnet50
     pretrained: true
-    loadPath: /content/drive/MyDrive/Fact/Experiments/Resnet50_18_cars/teacher_Resnet50/org/models/teacher_resnet50_protopnet_1.pth
+    loadPath: Experiments/Resnet50_18_cars/teacher_Resnet50/org/models/teacher_22_0.7729.pth
   StudentBaselinebackbone:
     prototypicalModel: protopnet
     name: resnet18
     pretrained: true
-    loadPath: /content/drive/MyDrive/Fact/Experiments/Resnet50_18_cars/student_Resnet18/org/models/student_resnet18_protopnet_1.pth
+    loadPath: Experiments/Resnet50_18_cars/student_Resnet18/org/models/student_22_0.7032.pth
   StudentKDbackbone:
     prototypicalModel: protopnet
     name: resnet18
     pretrained: true
-    loadPath: /content/drive/MyDrive/Fact/Experiments/Resnet50_18_cars/kd_Resnet50_18/org/models/student_kd_resnet50_18_1.pth
+    loadPath: Experiments/Resnet50_18_cars/kd_Resnet50_18/org/models/kd_34_onlyproto_0.00609.pth
   protoPNet:
     numPrototypes: 1960
     classSpecific: true
@@ -43,5 +43,5 @@ common:
   numWorkers: 0
   testBatchSize: 1
   testNumWorkers: 0
-  trainBatchSize: 64
-  trainNumWorkers: 2
+  trainBatchSize: 4
+  trainNumWorkers: 1

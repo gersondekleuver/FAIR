@@ -12,27 +12,10 @@ import ray
 # num_cpus = os.cpu_count()
 # ray.init(num_cpus = num_cpus)
 
-def main(runName="teacher_Resnet50"):
 
-    # make change to your task for fact project
+def main():
 
-    print("Your are running %s"%runName)
-
-
-    if runName in ("teacher_Resnet50", "student_Resnet18" ):
-        serviceType ="recognition"
-    elif runName in ("kd_Resnet50_18" ):
-        serviceType ="kd"
-    elif runName in ("eval_setting" ):
-        serviceType ="evaluate"
-    else:
-        raise Exception("wrong runName %s" %runName )
-
-
-    newRun = "false"
-    randomRun =  "org"
-    ablationType = "Resnet50_18_cars"
-
+    runName, newRun, serviceType, randomRun, ablationType = sys.argv[1:]
     newRun = newRun.lower() == "true"
     if runName.strip().lower() == "none":
         runName = None
@@ -50,6 +33,7 @@ def main(runName="teacher_Resnet50"):
     dataset_loader = init_dataset(manager.dataConfig.loaderName)
     service = init_service(serviceType, manager.service_name, dataset_loader)
     service()
+
 
 if __name__ == "__main__":
     main()
