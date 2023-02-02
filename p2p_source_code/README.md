@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 
 # Proto2Proto [[arxiv](https://arxiv.org/abs/2204.11830)]
 
