@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 
 # UvA Fact replicate for Proto2Proto [[arxiv](https://arxiv.org/abs/2204.11830)]
 
@@ -86,7 +86,7 @@ The plotting of metrics of AAPs, AJS, we saved in [evaluation_metrics_plotting](
 </p>
 
 ## Citation
-Here is the citation of our basecode paper:
+Here is the citation of the proto2proto basecode paper:
 ```BibTeX
 @inproceedings{Keswani2022Proto2ProtoCY,
   title={Proto2Proto: Can you recognize the car, the way I do?},
