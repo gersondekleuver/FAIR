@@ -86,7 +86,7 @@ The plotting of metrics of AAPs, AJS, we saved in [evaluation_metrics_plotting](
 </p>
 
 ## Citation
-Here is the ciation of our basecode paper:
+Here is the citation of our basecode paper:
 ```BibTeX
 @inproceedings{Keswani2022Proto2ProtoCY,
   title={Proto2Proto: Can you recognize the car, the way I do?},
