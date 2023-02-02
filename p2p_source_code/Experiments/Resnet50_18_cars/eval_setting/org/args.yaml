@@ -19,7 +19,7 @@ settingsConfig:
     prototypicalModel: protopnet
     name: resnet50
     pretrained: true
-    loadPath: best_models/teacher_resnet50_0.7729.pth
+    loadPath: best_models/teacher_0.7729.pth
   StudentBaselinebackbone:
     prototypicalModel: protopnet
     name: resnet18
