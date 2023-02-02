@@ -6,9 +6,9 @@ dataConfig:
   imgSize: 224
   loaderName: cars
   augment: false
-  trainDir: datasets/cars/train_augmented # Path-to-dataset
-  projectDir: datasets/cars/train # Path-to-dataset
-  testDir: datasets/cars/test # Path-to-dataset
+  trainDir: datasets/data/cars/dataset/train_augmented_less
+  projectDir: datasets/data/cars/dataset/train
+  testDir: datasets/data/cars/dataset/test
 settingsConfig:
   imgSize: 224
   numFeatures: 256
@@ -19,17 +19,17 @@ settingsConfig:
     prototypicalModel: protopnet
     name: resnet50
     pretrained: true
-    loadPath: null # Path-to-teacher-model
+    loadPath: Experiments/Resnet50_18_cars/teacher_Resnet50/org/models/teacher_protopnet_22_0.7737.pth
   StudentBaselinebackbone:
     prototypicalModel: protopnet
     name: resnet18
     pretrained: true
-    loadPath: null # Path-to-student-baseline-model
+    loadPath: Experiments/Resnet50_18_cars/student_Resnet18/org/models/student_protopnet_21_0.619.pth
   StudentKDbackbone:
     prototypicalModel: protopnet
     name: resnet18
     pretrained: true
-    loadPath: null # Path-to-student-kd-model
+    loadPath: Experiments/Resnet50_18_cars/kd_Resnet50_18/org/models/kd_protopnet_22_0.729.pth
   protoPNet:
     numPrototypes: 1960
     classSpecific: true

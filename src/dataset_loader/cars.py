@@ -21,6 +21,7 @@ class DatasetLoader(object):
 
         img_size = manager.dataConfig.imgSize
         train_dir = manager.dataConfig.trainDir
+        print(train_dir)
         project_dir = manager.dataConfig.projectDir
         test_dir = manager.dataConfig.testDir
         augment = manager.dataConfig.augment

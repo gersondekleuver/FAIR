@@ -6,16 +6,16 @@ dataConfig:
   imgSize: 224
   loaderName: cars
   augment: false
-  trainDir: datasets/cars/train_augmented
-  projectDir: datasets/cars/train
-  testDir: datasets/cars/test
+  trainDir: datasets/data/cars/dataset/train_augmented_less
+  projectDir: datasets/data/cars/dataset/train
+  testDir: datasets/data/cars/dataset/test
 settingsConfig:
   imgSize: 224
   numFeatures: 256
   PrototypeActivationFunction: log
   useCheckpointOptimizer: true
   backbone:
-    name: resnet50
+    name: resnet18
     pretrained: true
     loadPath: null
     prototypicalModel: protopnet
@@ -37,7 +37,7 @@ settingsConfig:
       weight: 1.0e-04
   train:
     seed: 12
-    maxEpochs: 300
+    maxEpochs: 200
     lrNet: 2.0e-04
     lrBlock: 3.0e-03
     lrProto: 3.0e-03
@@ -56,7 +56,7 @@ common:
   cuda: true
   mgpus: true
   numWorkers: 0
-  testBatchSize: 100
+  testBatchSize: 64
   testNumWorkers: 0
   trainBatchSize: 128
-  trainNumWorkers: 4
+  trainNumWorkers: 2

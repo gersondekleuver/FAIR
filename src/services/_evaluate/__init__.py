@@ -1,7 +1,7 @@
 from . import protopnet_evaluate
 
 _factory = {
-    'protopnet_evaluate': protopnet_evaluate.Service
+    'protopnet_evaluate_final': protopnet_evaluate.Service
 }
 
 

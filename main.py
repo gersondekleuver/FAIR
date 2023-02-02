@@ -16,8 +16,6 @@ import ray
 def main():
 
     runName, newRun, serviceType, randomRun, ablationType = sys.argv[1:]
-    print(runName, newRun, serviceType, randomRun, ablationType)
-
     newRun = newRun.lower() == "true"
     if runName.strip().lower() == "none":
         runName = None

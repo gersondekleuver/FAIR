@@ -1,14 +1,14 @@
 dataDir: fill
 newRun: false
-runName: kd_Vgg19_11
+runName: kd_Resnet50_18
 serviceName: protopnet_kd
 dataConfig:
   imgSize: 224
   loaderName: cars
   augment: false
-  trainDir: datasets/CUB_200_2011/dataset/train_cropped_augmented # Check the dataset path
-  projectDir: datasets/CUB_200_2011/train # Check the dataset path
-  testDir: datasets/CUB_200_2011/dataset/test_full_augmented # Check the dataset path
+  trainDir: datasets/data/cars/dataset/train_augmented_less
+  projectDir: datasets/data/cars/dataset/train
+  testDir: datasets/data/cars/dataset/test
 settingsConfig:
   imgSize: 224
   numFeatures: 256
@@ -17,13 +17,13 @@ settingsConfig:
   useCheckpointOptimizer: true
   tauTrain: 100
   backbone:
-    name: vgg19
+    name: resnet50
     pretrained: true
     featureDim: 2048
     prototypicalModel: protopnet
-    loadPath: saved_models/vgg19/004/10_198push0.7639.pth
+    loadPath: Experiments/Resnet50_18_cars/teacher_Resnet50/org/models/teacher_22_0.7729.pth
   target:
-    name: vgg11
+    name: resnet18
     pretrained: true
     loadPath: null
     featureDim: 512
@@ -34,22 +34,22 @@ settingsConfig:
     W1: 1
     H1: 1
   stage1LossList:
-    addOnLoss:
+    addOnLoss: # patch prototype  PPC
       consider: true
       weight: 10.0
-    protoLoss:
+    protoLoss: # global explaination loss
       consider: true
       weight: 10.0
   stage2LossList:
     crossEntropy:
-      consider: true
+      consider: false
       weight: 1.0
     clusterSep:
-      consider: true
+      consider: false
       clusterWeight: 1.0
       sepWeight: -0.08
-    l1:
-      consider: true
+    l1: # model loss ???
+      consider: false
       weight: 1.0e-04
     addOnLoss:
       consider: true
@@ -59,7 +59,7 @@ settingsConfig:
       weight: 10.0
   train:
     seed: 9
-    maxEpochs: 300
+    maxEpochs: 35
     lrNet: 2.0e-04
     lrBlock: 3.0e-03
     lrProto: 3.0e-03
@@ -79,7 +79,7 @@ common:
   cuda: true
   mgpus: true
   numWorkers: 0
-  testBatchSize: 100
+  testBatchSize: 64
   testNumWorkers: 0
-  trainBatchSize: 64
-  trainNumWorkers: 4
+  trainBatchSize: 128
+  trainNumWorkers: 2

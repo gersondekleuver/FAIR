@@ -6,7 +6,7 @@ from src.utils.dirs import create_dirs, check_path
 from src.utils.argument_parser import read_from_file, save_to_file
 from numpy.random import RandomState
 
-_base_dir = "Experiments"
+_base_dir = "Experiments/"
 _service_list = ["recognition", "kd", "evaluate"]
 
 
@@ -22,7 +22,7 @@ class Manager(object):
 
         # Create a new experiment
         if newRun:
-
+            os.makedirs("experiments_list.txt")
             file = open("experiments_list.txt", "r")
             exp_list = file.read().splitlines()
 
@@ -66,7 +66,9 @@ class Manager(object):
         print("*"*25, runName, "*"*25)
         print("\n")
 
-        base_dir = os.path.join(_base_dir, ablationType, runName, str(randomRun))
+        base_dir = os.path.join(_base_dir, ablationType,
+                                runName, str(randomRun))
+        print(base_dir)
         # Modified base_dir
         create_dirs(base_dir)
 
@@ -74,6 +76,7 @@ class Manager(object):
         assert check_path(base_dir), "Experiment doesn't exist"
         # Read arguments
         config_file = os.path.join(base_dir,  "args.yaml")
+        print(config_file)
         args, _ = read_from_file(config_file)
 
         # Saving what's necessary

@@ -7,6 +7,7 @@ from .receptive_field import compute_proto_layer_rf_info_v2
 # img_size, prototype_shape, init_weights=True, prototype_activation_function='log',
 # add_on_layers_type='bottleneck', proto_layer_rf_info=""
 
+
 class PPNet(nn.Module):
 
     def __init__(self, num_classes, feature_net, args):
@@ -18,10 +19,12 @@ class PPNet(nn.Module):
 
         if features_name.startswith('VGG') or features_name.startswith('RES'):
             first_add_on_layer_in_channels = \
-                [i for i in feature_net.modules() if isinstance(i, nn.Conv2d)][-1].out_channels
+                [i for i in feature_net.modules() if isinstance(i, nn.Conv2d)
+                 ][-1].out_channels
         elif features_name.startswith('DENSE'):
             first_add_on_layer_in_channels = \
-                [i for i in feature_net.modules() if isinstance(i, nn.BatchNorm2d)][-1].num_features
+                [i for i in feature_net.modules() if isinstance(
+                    i, nn.BatchNorm2d)][-1].num_features
         else:
             raise Exception('Other base architectures NOT implemented')
 
@@ -43,7 +46,7 @@ class PPNet(nn.Module):
         layer_filter_sizes, layer_strides, layer_paddings = feature_net.conv_info()
 
         self.proto_layer_rf_info = compute_proto_layer_rf_info_v2(
-            img_size=args.imgSize, layer_filter_sizes=layer_filter_sizes, 
+            img_size=args.imgSize, layer_filter_sizes=layer_filter_sizes,
             layer_strides=layer_strides, layer_paddings=layer_paddings,
             prototype_kernel_size=self.prototype_shape[2])
 
@@ -56,10 +59,10 @@ class PPNet(nn.Module):
         Without domain specific knowledge we allocate the same number of
         prototypes for each class
         '''
-        print(self.num_prototypes,  self._num_classes)
         assert(self.num_prototypes % self._num_classes == 0)
         # a onehot indication matrix for each prototype's class identity
-        self.prototype_class_identity = torch.zeros(self.num_prototypes, self._num_classes)
+        self.prototype_class_identity = torch.zeros(
+            self.num_prototypes, self._num_classes)
 
         num_prototypes_per_class = self.num_prototypes // self._num_classes
         for j in range(self.num_prototypes):
@@ -78,7 +81,7 @@ class PPNet(nn.Module):
                                  requires_grad=False)
 
         self.last_layer = nn.Linear(self.num_prototypes, self._num_classes,
-                                    bias=False) # do not use bias
+                                    bias=False)  # do not use bias
 
         self._initialize_weights()
 
@@ -147,6 +150,7 @@ class PPNet(nn.Module):
     def distance_2_similarity(self, distances):
         if self.prototype_activation_function == 'log':
             return torch.log((distances + 1) / (distances + self.epsilon))
+
         elif self.prototype_activation_function == 'linear':
             return -distances
         else:
@@ -180,7 +184,8 @@ class PPNet(nn.Module):
         [0, current number of prototypes - 1] that indicates the prototypes to
         be removed
         '''
-        prototypes_to_keep = list(set(range(self.num_prototypes)) - set(prototypes_to_prune))
+        prototypes_to_keep = list(
+            set(range(self.num_prototypes)) - set(prototypes_to_prune))
 
         self.prototype_vectors = nn.Parameter(self.prototype_vectors.data[prototypes_to_keep, ...],
                                               requires_grad=True)
@@ -192,7 +197,8 @@ class PPNet(nn.Module):
         # changing in_features and out_features make sure the numbers are consistent
         self.last_layer.in_features = self.num_prototypes
         self.last_layer.out_features = self._num_classes
-        self.last_layer.weight.data = self.last_layer.weight.data[:, prototypes_to_keep]
+        self.last_layer.weight.data = self.last_layer.weight.data[:,
+                                                                  prototypes_to_keep]
 
         # self.ones is nn.Parameter
         self.ones = nn.Parameter(self.ones.data[prototypes_to_keep, ...],
@@ -233,7 +239,8 @@ class PPNet(nn.Module):
         for m in self._add_on.modules():
             if isinstance(m, nn.Conv2d):
                 # every init technique has an underscore _ in the name
-                nn.init.kaiming_normal_(m.weight, mode='fan_out', nonlinearity='relu')
+                nn.init.kaiming_normal_(
+                    m.weight, mode='fan_out', nonlinearity='relu')
 
                 if m.bias is not None:
                     nn.init.constant_(m.bias, 0)

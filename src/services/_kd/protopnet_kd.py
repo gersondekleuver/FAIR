@@ -15,6 +15,7 @@ import torch.nn as nn
 
 from lib.utils import evaluate
 
+
 class Trainer(object):
 
     def __init__(self, dataset_loader):
@@ -31,7 +32,7 @@ class Trainer(object):
 
         if checkpoint is None:
             self.model.stu_feature_adap = nn.Sequential(nn.Conv2d(512, 2048,
-                                                       kernel_size=1, padding=0), nn.ReLU()).cuda()
+                                                                  kernel_size=1, padding=0), nn.ReLU()).cuda()
 
         self.model_dir = os.path.join(self.manager.base_dir, "models")
         create_dirs(self.model_dir)
@@ -62,7 +63,8 @@ class Trainer(object):
             get_optimizer(self.model, manager.settingsConfig, mgpus=self.mgpus)
 
         last_paramlist = [
-            {'params': self.model.module.last_layer.parameters(), 'lr': manager.settingsConfig.train.lrLastLayer}
+            {'params': self.model.module.last_layer.parameters(
+            ), 'lr': manager.settingsConfig.train.lrLastLayer}
         ]
         self.last_optimizer = torch.optim.Adam(last_paramlist)
 
@@ -77,7 +79,8 @@ class Trainer(object):
         if checkpoint is not None:
             self.start_epoch = checkpoint["epoch"]
             self.warm_optimizer.load_state_dict(checkpoint["warm_optimizer"])
-            self.joint_frozen_optimizer.load_state_dict(checkpoint["joint_frozen_optimizer"])
+            self.joint_frozen_optimizer.load_state_dict(
+                checkpoint["joint_frozen_optimizer"])
             self.joint_optimizer.load_state_dict(checkpoint["joint_optimizer"])
             self.scheduler.load_state_dict(checkpoint["scheduler"])
             self.last_scheduler.load_state_dict(checkpoint["last_scheduler"])
@@ -101,24 +104,30 @@ class Trainer(object):
         if self.mgpus:
             # Optimize class distributions in leafs
             self.eye = torch.eye(self.model.module._num_classes)
-            self.model.module.last_layer.weight.data.copy_(self.teacher_model.module.last_layer.weight.data)
+            self.model.module.last_layer.weight.data.copy_(
+                self.teacher_model.module.last_layer.weight.data)
         else:
             self.eye = torch.eye(self.model._num_classes)
-            self.model.last_layer.weight.data.copy_(self.teacher_model.last_layer.weight.data)
+            self.model.last_layer.weight.data.copy_(
+                self.teacher_model.last_layer.weight.data)
 
         for epoch in tqdm(range(self.start_epoch, max_epochs + 1)):
 
             if epoch <= warm_epochs:
                 warm_only(self.model, self.trainable_param_names, self.mgpus)
-                self.train_epoch(epoch, self.warm_optimizer, loss_list=stage1_loss_list)
+                self.train_epoch(epoch, self.warm_optimizer,
+                                 loss_list=stage1_loss_list)
             elif epoch <= stage1_epochs:
-                joint_head_frozen(self.model, self.trainable_param_names, self.mgpus)
-                self.train_epoch(epoch, self.joint_frozen_optimizer, loss_list=stage1_loss_list)
+                joint_head_frozen(
+                    self.model, self.trainable_param_names, self.mgpus)
+                self.train_epoch(
+                    epoch, self.joint_frozen_optimizer, loss_list=stage1_loss_list)
                 if epoch >= step_start:
                     self.scheduler.step()
             else:
                 joint(self.model, self.trainable_param_names, self.mgpus)
-                self.train_epoch(epoch, self.joint_optimizer, loss_list=stage2_loss_list)
+                self.train_epoch(epoch, self.joint_optimizer,
+                                 loss_list=stage2_loss_list)
                 if epoch >= step_start:
                     self.last_scheduler.step()
 
@@ -136,7 +145,8 @@ class Trainer(object):
                 print("Epoch", "Push", self.evaluate(epoch, log=False))
                 last_only(self.model, self.mgpus)
                 for ii in tqdm(range(10)):
-                    self.train_epoch(epoch, self.last_optimizer, log=False, loss_list=stage2_loss_list)
+                    self.train_epoch(epoch, self.last_optimizer,
+                                     log=False, loss_list=stage2_loss_list)
                 self.save_model(epoch, append="push_tuned")
                 print("Epoch", "Push tuned", self.evaluate(epoch, log=False))
 
@@ -148,7 +158,8 @@ class Trainer(object):
         for step in tqdm(range(self.iters_per_epoch), leave=False):
             save_step = (epoch - 1) * self.iters_per_epoch + step
             data = next(data_iter)
-            self.train_step(data, save_step, optimizer, log=log, loss_list=loss_list)
+            self.train_step(data, save_step, optimizer,
+                            log=log, loss_list=loss_list)
 
     def train_step(self, data, step, optimizer, log=True, loss_list=[]):
 
@@ -164,7 +175,7 @@ class Trainer(object):
         ys_pred, info = self.model.forward(xs)
         ys_pred_tchr, info_tchr = self.teacher_model.forward(xs)
 
-        #Getting teacher/student distances:
+        # Getting teacher/student distances:
         teacher_distances = info[3]
 
         if len(loss_list) == 0:
@@ -200,7 +211,8 @@ class Trainer(object):
             scalar_dict["loss_ce"] = loss_ce.item()
 
         if hasattr(loss_list, "clusterSep") and loss_list.clusterSep.consider:
-            loss_cluster, loss_sep = cluster_sep_loss_fn(self.model, info[0], ys, self.mgpus)
+            loss_cluster, loss_sep = cluster_sep_loss_fn(
+                self.model, info[0], ys, self.mgpus)
             loss_cluster = loss_list.clusterSep.clusterWeight*loss_cluster
             loss_sep = loss_list.clusterSep.sepWeight*loss_sep
             total_loss += loss_cluster
@@ -237,12 +249,14 @@ class Trainer(object):
 
         push.push_prototypes(
             self.dataset_loader.project_loader,
-            prototype_network_parallel=self.model, # pytorch network with prototype_vectors
+            # pytorch network with prototype_vectors
+            prototype_network_parallel=self.model,
             class_specific=True,
             preprocess_input_function=preprocess.preprocess_input_function,
             prototype_layer_stride=1,
-            root_dir_for_saving_prototypes=None, # if not None, prototypes will be saved here
-            epoch_number=epoch, # if not provided, prototypes saved previously will be overwritten
+            # if not None, prototypes will be saved here
+            root_dir_for_saving_prototypes='prototypes/',
+            epoch_number=epoch,  # if not provided, prototypes saved previously will be overwritten
             prototype_img_filename_prefix='prototype-img',
             prototype_self_act_filename_prefix='prototype-self-act',
             proto_bound_boxes_filename_prefix='bb',
@@ -250,10 +264,10 @@ class Trainer(object):
             log=print)
 
     def get_vectorized_mask(self, t_dist):
-        #t_dist -> (batch, num_p, h, w)
+        # t_dist -> (batch, num_p, h, w)
         teacher_scores, _ = F.max_pool2d(-t_dist, kernel_size=(t_dist.size()[2], t_dist.size()[3]),
                                          return_indices=True)
         mask = (teacher_scores == -t_dist)
         mask = (t_dist < self.tau_train)*mask
-        mask = torch.any(mask, dim = 1)
+        mask = torch.any(mask, dim=1)
         return mask
