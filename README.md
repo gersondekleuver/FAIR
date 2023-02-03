@@ -24,6 +24,11 @@ conda activate myenv
 pip install ./p2p_source_code/requirements.txt
 ```
 
+## Model checkpoints 
+
+The model checkpoints and prototypes can be downloaded here:
+https://drive.google.com/drive/folders/1iB0HXFzyboXhIBSzzwhbkNPmEJFImXCj
+
 
 ## Preparing Dataset
 
