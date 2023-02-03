@@ -21,7 +21,7 @@ settingsConfig:
     pretrained: true
     featureDim: 2048
     prototypicalModel: protopnet
-    loadPath: best_models/teacher_0.7729.pth  # best_models/kd_student_0.7291.pth # for converting the kd checkout file to complete file
+    loadPath: best_models/teacher_22_0.7729.pth 
   target:
     name: resnet18
     pretrained: true
