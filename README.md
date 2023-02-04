@@ -1,6 +1,6 @@
 
 
-# UvA Fact replicate for Proto2Proto [[arxiv](https://arxiv.org/abs/2204.11830)]
+# Reproducibility study of ‘Proto2Proto: Can you recognize the car, the way I do?’ [[arxiv](https://arxiv.org/abs/2204.11830)]
 
 
 
